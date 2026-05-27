@@ -128,12 +128,14 @@ html,body{
 .portal.cards .portal-icon{background:radial-gradient(circle,rgba(176,143,255,0.15),rgba(176,143,255,0.02));border-top-color:rgba(176,143,255,0.25);border-left-color:rgba(176,143,255,0.18)}
 .portal.daily .portal-icon{background:radial-gradient(circle,rgba(255,180,100,0.15),rgba(255,180,100,0.02));border-top-color:rgba(255,180,100,0.25);border-left-color:rgba(255,180,100,0.18)}
 .portal.stats .portal-icon{background:radial-gradient(circle,rgba(130,200,230,0.15),rgba(130,200,230,0.02));border-top-color:rgba(130,200,230,0.25);border-left-color:rgba(130,200,230,0.18)}
+.portal.guestbook .portal-icon{background:radial-gradient(circle,rgba(180,220,180,0.15),rgba(180,220,180,0.02));border-top-color:rgba(180,220,180,0.25);border-left-color:rgba(180,220,180,0.18)}
 
 .portal h2{font-family:var(--ft);font-size:1.4rem;font-weight:700}
 .portal.wish h2{background:linear-gradient(180deg,var(--g3),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .portal.cards h2{background:linear-gradient(180deg,var(--p2),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .portal.daily h2{background:linear-gradient(180deg,#FFCC99,#FF9966);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .portal.stats h2{background:linear-gradient(180deg,#99DDFF,#55AADD);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.portal.guestbook h2{background:linear-gradient(180deg,#C8E8C8,#66AA88);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 
 .portal p{font-size:0.85rem;color:var(--t2);line-height:1.6}
 
@@ -147,6 +149,34 @@ html,body{
   position:fixed;bottom:28px;left:50%;transform:translateX(-50%);
   z-index:2;font-size:0.75rem;color:var(--t2);
   letter-spacing:0.1em;
+}
+
+/* ===== Return button (visible when dimmed) ===== */
+.return-btn{
+  position:fixed;bottom:32px;right:32px;z-index:20;
+  width:46px;height:46px;border-radius:50%;
+  border:none;cursor:pointer;outline:none;
+  background:rgba(18,22,40,0.32);
+  backdrop-filter:blur(12px) saturate(150%);
+  -webkit-backdrop-filter:blur(12px) saturate(150%);
+  border-top:1px solid rgba(255,255,255,0.16);
+  border-left:1px solid rgba(255,255,255,0.10);
+  border-right:1px solid rgba(255,255,255,0.05);
+  border-bottom:1px solid rgba(255,255,255,0.03);
+  color:var(--gold);font-size:1.2rem;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 6px 24px rgba(0,0,0,0.4);
+  opacity:0;pointer-events:none;
+  transition:opacity 0.4s ease,transform 0.3s ease;
+  transform:scale(0.8);
+}
+.return-btn.visible{
+  opacity:1;pointer-events:auto;transform:scale(1);
+}
+.return-btn:hover{
+  border-top-color:rgba(255,255,255,0.28);
+  background:rgba(212,184,122,0.12);
+  box-shadow:0 8px 30px rgba(0,0,0,0.5),0 0 20px rgba(212,184,122,0.12);
 }
 
 /* ===== Portal auto-fade: dim when mouse is away ===== */
@@ -254,10 +284,19 @@ html,body{
       <p>回顾祈愿历程，一览数据<br>收集进度与稀有度分布</p>
       <span class="portal-arrow">进入 →</span>
     </a>
+    <a class="portal guestbook" id="portal-guestbook" onclick="event.preventDefault();document.getElementById('guestbook-toggle').click()">
+      <div class="portal-icon">💬</div>
+      <h2>留言板</h2>
+      <p>留下足迹，分享你的祈愿故事<br>与星穹旅人们一同交流</p>
+      <span class="portal-arrow">展开 ▽</span>
+    </a>
   </div>
 </main>
 
 <footer class="footer">© 2026 星穹祈愿 — Stellar Wish</footer>
+
+<!-- Dimmed-state return button -->
+<button class="return-btn" id="return-btn" title="回到入口">✦</button>
 
 <!-- ===== Guestbook ===== -->
 <div class="guestbook-bar" id="guestbook-bar">
@@ -680,6 +719,7 @@ frame();
    ============================================== */
 (function(){
   var hero = document.querySelector('.hero');
+  var returnBtn = document.getElementById('return-btn');
   var guestbookBar = document.getElementById('guestbook-bar');
   var guestbookToggle = document.getElementById('guestbook-toggle');
   var giscusLoaded = false;
@@ -693,6 +733,7 @@ frame();
     var els = hero.querySelectorAll('.logo,.subtitle,.portals');
     els.forEach(function(el){ el.style.transition = 'none'; });
     hero.classList.remove('dimmed');
+    returnBtn.classList.remove('visible');
     // Trigger reflow so the 'none' transition takes effect immediately
     hero.offsetHeight;
     // Restore CSS transition for next fade-out
@@ -700,21 +741,28 @@ frame();
     resetTimer();
   }
 
+  function doDim(){
+    hero.classList.add('dimmed');
+    returnBtn.classList.add('visible');
+  }
+
   function resetTimer(){
     clearTimeout(dimTimer);
-    dimTimer = setTimeout(function(){ hero.classList.add('dimmed'); }, DIM_DELAY);
+    dimTimer = setTimeout(doDim, DIM_DELAY);
   }
 
   // Mouse enters hero area — immediately show
   hero.addEventListener('mouseenter', undim);
   // Mouse moves anywhere on the page — reset the fade countdown
   document.addEventListener('mousemove', function(e){
-    if(hero.contains(e.target)){
+    if(hero.contains(e.target) || returnBtn.contains(e.target)){
       undim();
     }else{
       resetTimer();
     }
   });
+  // Return button click — manually undim
+  returnBtn.addEventListener('click', undim);
   // Start the timer on page load
   resetTimer();
 
