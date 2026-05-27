@@ -1250,6 +1250,157 @@ body{
   .mg-gameover{padding:24px 28px}
   .mg-gameover h2{font-size:1.4rem}
 }
+
+/* ============================================================
+   BROADCAST DANMAKU (5★ / 6★)
+============================================================ */
+#broadcast-layer{
+  position:fixed;inset:0;z-index:125;
+  pointer-events:none;overflow:hidden;
+}
+.broadcast-danmaku{
+  position:absolute;left:0;white-space:nowrap;
+  font-size:0.76rem;font-family:var(--fu);font-weight:500;
+  letter-spacing:0.5px;padding:3px 10px;border-radius:3px;
+  opacity:0.88;
+  will-change:transform;
+}
+.danmaku-5{
+  color:#ffe9b0;
+  background:linear-gradient(90deg,rgba(40,28,8,0.45),rgba(60,40,10,0.25),transparent);
+  text-shadow:0 0 6px rgba(255,210,100,0.9),0 0 14px rgba(212,184,122,0.55);
+  animation:danmaku-scroll linear forwards,gold-flash 1.1s ease-in-out infinite;
+}
+.danmaku-6{
+  color:#ff5555;
+  background:linear-gradient(90deg,rgba(50,8,8,0.5),rgba(70,10,10,0.28),transparent);
+  text-shadow:0 0 8px rgba(255,60,60,0.95),0 0 16px rgba(255,30,30,0.65);
+  animation:danmaku-scroll linear forwards,red-flash 0.95s ease-in-out infinite;
+}
+@keyframes danmaku-scroll{
+  from{transform:translateX(100vw)}
+  to{transform:translateX(calc(-100% - 20px))}
+}
+@keyframes gold-flash{
+  0%,100%{filter:brightness(1)}
+  50%{filter:brightness(1.45)}
+}
+@keyframes red-flash{
+  0%,100%{filter:brightness(1)}
+  50%{filter:brightness(1.55)}
+}
+@media(max-width:768px){
+  .broadcast-danmaku{font-size:0.68rem;padding:2px 8px}
+}
+
+/* ============================================================
+   AUTH & LEADERBOARD
+============================================================ */
+#auth-overlay{
+  position:fixed;inset:0;z-index:300;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(4,6,16,0.92);backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  padding:20px;
+}
+#auth-overlay.hidden{display:none}
+.auth-card{
+  width:min(400px,92vw);
+  background:var(--panel);border:1px solid var(--pborder);
+  border-radius:16px;padding:24px 22px;
+  box-shadow:0 12px 48px rgba(0,0,0,0.45);
+}
+.auth-card h2{
+  font-family:var(--ft);font-size:1.15rem;text-align:center;margin-bottom:4px;
+  background:linear-gradient(180deg,var(--g2),var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.auth-sub{text-align:center;font-size:0.72rem;color:var(--t3);margin-bottom:18px}
+.auth-tabs{display:flex;gap:8px;margin-bottom:16px}
+.auth-tab{
+  flex:1;padding:8px;border-radius:10px;border:1px solid rgba(255,255,255,0.08);
+  background:rgba(255,255,255,0.02);color:var(--t2);cursor:pointer;
+  font-family:var(--fu);font-size:0.78rem;transition:all 0.2s;
+}
+.auth-tab.active{color:var(--gold);border-color:rgba(212,184,122,0.45);background:rgba(212,184,122,0.08)}
+.auth-field{margin-bottom:12px}
+.auth-field label{display:block;font-size:0.72rem;color:var(--t2);margin-bottom:5px}
+.auth-field input{
+  width:100%;padding:9px 12px;border-radius:10px;
+  border:1px solid rgba(255,255,255,0.1);background:rgba(0,0,0,0.25);
+  color:var(--text);font-family:var(--fu);font-size:0.85rem;outline:none;
+}
+.auth-field input:focus{border-color:rgba(212,184,122,0.45)}
+.auth-msg{min-height:1.2em;font-size:0.72rem;color:#ff8a8a;text-align:center;margin:8px 0 4px}
+.auth-btn{
+  width:100%;padding:11px;border:none;border-radius:10px;cursor:pointer;
+  font-family:var(--ft);font-size:0.9rem;letter-spacing:1px;
+  background:linear-gradient(135deg,rgba(212,184,122,0.35),rgba(176,143,255,0.2));
+  color:var(--g2);border:1px solid rgba(212,184,122,0.4);transition:all 0.2s;
+}
+.auth-btn:hover{box-shadow:0 0 20px rgba(212,184,122,0.25)}
+.auth-gei-q{
+  text-align:center;font-family:var(--ft);font-size:1rem;color:var(--g2);
+  margin:12px 0 20px;letter-spacing:1px;
+}
+.auth-gei-btns{display:flex;gap:12px}
+.auth-gei-btns .auth-btn{flex:1}
+.auth-gei-btns .auth-btn.no{
+  background:rgba(80,20,20,0.35);border-color:rgba(255,100,100,0.35);color:#ffb0b0;
+}
+.auth-blocked-icon{font-size:2.5rem;text-align:center;margin-bottom:8px}
+.auth-blocked-title{
+  text-align:center;font-family:var(--ft);font-size:1.1rem;color:#ff8a8a;margin-bottom:8px;
+}
+.auth-blocked-desc{text-align:center;font-size:0.78rem;color:var(--t2);line-height:1.5;margin-bottom:18px}
+.auth-blocked-actions{display:flex;flex-direction:column;gap:8px}
+.user-tag{
+  font-size:0.7rem;color:var(--t3);margin-left:4px;max-width:88px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+#leaderboard-overlay{
+  position:fixed;inset:0;z-index:48;background:rgba(0,0,0,0.45);
+  opacity:0;pointer-events:none;transition:opacity 0.35s;
+}
+#leaderboard-overlay.open{opacity:1;pointer-events:auto}
+#leaderboard-panel{
+  position:fixed;top:0;right:0;bottom:0;z-index:50;
+  width:380px;max-width:92vw;
+  background:var(--panel);backdrop-filter:blur(24px);
+  -webkit-backdrop-filter:blur(24px);
+  border-left:1px solid var(--pborder);
+  box-shadow:-8px 0 40px rgba(0,0,0,0.5);
+  transform:translateX(105%);
+  transition:transform 0.4s cubic-bezier(0.22,0.61,0.36,1);
+  display:flex;flex-direction:column;
+}
+#leaderboard-panel.open{transform:translateX(0)}
+.lb-inner{padding:16px 18px;overflow-y:auto;flex:1}
+.lb-hdr{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 18px;border-bottom:1px solid rgba(255,255,255,0.05);
+}
+.lb-hdr h3{
+  font-family:var(--ft);font-size:1rem;
+  background:linear-gradient(180deg,var(--g2),var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.lb-my-rank{
+  padding:10px 12px;border-radius:10px;margin-bottom:14px;
+  background:rgba(212,184,122,0.08);border:1px solid rgba(212,184,122,0.25);
+  font-size:0.78rem;color:var(--g2);line-height:1.5;
+}
+.lb-table{width:100%;border-collapse:collapse;font-size:0.74rem}
+.lb-table th{
+  color:var(--t3);font-weight:500;padding:8px 6px;
+  border-bottom:1px solid rgba(255,255,255,0.06);text-align:left;
+}
+.lb-table td{padding:8px 6px;border-bottom:1px solid rgba(255,255,255,0.04);color:var(--t2)}
+.lb-table tr.me td{color:var(--g2);background:rgba(212,184,122,0.06)}
+.lb-table .col-rank{width:36px;text-align:center}
+.lb-table .col-rate{color:var(--gold);font-weight:600}
+.lb-empty{text-align:center;color:var(--t3);padding:24px 0;font-size:0.78rem}
+body.auth-locked #app{visibility:hidden;pointer-events:none}
 </style>
 </head>
 <body>
@@ -1261,6 +1412,7 @@ body{
 
 <!-- Full-screen effects layers -->
 <div id="fullscreen-flash"></div>
+<div id="broadcast-layer" aria-live="polite"></div>
 
 <!-- Main App -->
 <div id="app">
@@ -1270,6 +1422,7 @@ body{
       <button class="back-arrow" title="返回" onclick="location.href='index.html'">←</button>
       <div class="brand-icon"></div>
       <span class="banner-name" id="banner-name">角色活动祈愿</span>
+      <span class="user-tag" id="user-tag" hidden></span>
     </div>
     <div class="top-right">
       <div class="res-card">
@@ -1320,6 +1473,7 @@ body{
 
     <!-- RIGHT FLOATS -->
     <div class="right-floats">
+      <button class="float-orb" id="btn-leaderboard" aria-label="排行榜" title="排行榜">🏆</button>
       <button class="float-orb" id="btn-details" aria-label="详情" title="详情">?</button>
       <button class="float-orb" id="btn-history" aria-label="历史记录" title="历史记录">📋</button>
     </div>
@@ -1419,6 +1573,59 @@ body{
 </div>
 <button class="btn-skip" id="btn-skip">跳过 »</button>
 
+<!-- AUTH GATE -->
+<div id="auth-overlay">
+  <div class="auth-card" id="auth-panel-form">
+    <h2 id="auth-title">登录</h2>
+    <p class="auth-sub">注册后方可进入祈愿</p>
+    <div class="auth-tabs">
+      <button type="button" class="auth-tab active" data-mode="login">登录</button>
+      <button type="button" class="auth-tab" data-mode="register">注册</button>
+    </div>
+    <div class="auth-field">
+      <label for="auth-username">用户名</label>
+      <input id="auth-username" type="text" autocomplete="username" maxlength="16" placeholder="2-16 个字符">
+    </div>
+    <div class="auth-field">
+      <label for="auth-password">密码</label>
+      <input id="auth-password" type="password" autocomplete="current-password" maxlength="32" placeholder="至少 4 位">
+    </div>
+    <p class="auth-msg" id="auth-msg"></p>
+    <button type="button" class="auth-btn" id="auth-submit">登录</button>
+  </div>
+  <div class="auth-card" id="auth-panel-gei" hidden>
+    <h2>身份确认</h2>
+    <p class="auth-gei-q">你是不是「给」？</p>
+    <div class="auth-gei-btns">
+      <button type="button" class="auth-btn" id="auth-gei-yes">是</button>
+      <button type="button" class="auth-btn no" id="auth-gei-no">不是</button>
+    </div>
+  </div>
+  <div class="auth-card" id="auth-panel-blocked" hidden>
+    <div class="auth-blocked-icon">⛔</div>
+    <div class="auth-blocked-title">无法进入</div>
+    <p class="auth-blocked-desc">你选择了「不是」，无法进入祈愿。<br>如需继续，请切换账号或重新登录后选择「是」。</p>
+    <div class="auth-blocked-actions">
+      <button type="button" class="auth-btn" id="auth-switch-account">切换账号</button>
+    </div>
+  </div>
+</div>
+
+<!-- LEADERBOARD -->
+<div id="leaderboard-overlay"></div>
+<div id="leaderboard-panel" role="dialog" aria-label="排行榜">
+  <div class="lb-hdr">
+    <h3>玩家排行榜</h3>
+    <button class="details-close" id="lb-close" type="button">✕</button>
+  </div>
+  <div class="lb-inner">
+    <p class="lb-my-rank" id="lb-my-rank">—</p>
+    <p class="auth-sub" style="margin:-6px 0 12px">按五星及以上出货概率排序（5★+6★）/ 总抽数</p>
+    <div id="lb-table-wrap"></div>
+    <button type="button" class="auth-btn" id="auth-logout" style="margin-top:16px">退出登录</button>
+  </div>
+</div>
+
 <script>
 (function(){
 /* ============================================================
@@ -1473,6 +1680,13 @@ const BN=[
 
 /* State */
 let S={bn:0,total:0,p5:[0,0,0],p4:[0,0,0],p6:[0,0,0],guar:[false,false,false],hist:[],muted:false};
+let gameReady=false;
+
+/* Auth */
+const USERS_KEY='wish_users_v1';
+const SESS_KEY='wish_session_v1';
+const GEI_KEY='wish_gei_pass';
+let Auth={user:null,mode:'login'};
 
 /* DOM shortcuts */
 const Q=s=>document.querySelector(s);
@@ -1579,6 +1793,39 @@ function buildAmbient(){
     d.style.animationDelay=Math.random()*4+'s';d.style.animationDuration=(3+Math.random()*3)+'s';
     c.appendChild(d);
   }
+}
+
+/* ============================================================
+   BROADCAST DANMAKU
+============================================================ */
+function getPlayerName(){return Auth.user||'旅者'}
+function spawnBroadcast(rarity,cardName){
+  const layer=Q('#broadcast-layer');
+  if(!layer||!cardName)return;
+  const is6=rarity===6;
+  const starLabel=is6?'六星':'五星';
+  const text=getPlayerName()+' 抽取到了'+starLabel+'角色「'+cardName+'」';
+  const el=document.createElement('div');
+  el.className='broadcast-danmaku '+(is6?'danmaku-6':'danmaku-5');
+  el.textContent=text;
+  el.style.top=(10+Math.random()*18)+'%';
+  const dur=9+text.length*0.12;
+  el.style.animationDuration=dur+'s, '+(is6?'0.95s':'1.1s');
+  layer.appendChild(el);
+  el.addEventListener('animationend',e=>{
+    if(e.animationName==='danmaku-scroll')el.remove();
+  });
+}
+function broadcastRarePulls(rs,stagger){
+  let delay=0;
+  rs.forEach(r=>{
+    if(r.rarity===5||r.rarity===6){
+      const d=delay;
+      if(stagger)setTimeout(()=>spawnBroadcast(r.rarity,r.card.name),d);
+      else spawnBroadcast(r.rarity,r.card.name);
+      delay+=480;
+    }
+  });
 }
 
 /* ============================================================
@@ -1806,6 +2053,7 @@ function flipAll(rs){
       sndFlip();
       // Per-card effects
       if(r===6){
+        spawnBroadcast(6,rs[i].card.name);
         const rect=el.getBoundingClientRect();
         triggerFivePillar(rect.left+rect.width/2);
         spawnGoldDrops();
@@ -1823,6 +2071,7 @@ function flipAll(rs){
         if(navigator.vibrate)navigator.vibrate([80,40,100,40,200,60,300]);
       }else if(r===5){
         any5=true;
+        spawnBroadcast(5,rs[i].card.name);
         // Light pillar from THIS card position
         const rect=el.getBoundingClientRect();
         triggerFivePillar(rect.left+rect.width/2);
@@ -1885,6 +2134,7 @@ function skipAnimation(){
   setTimeout(()=>{
     const cards=cardDeck.querySelectorAll('.card-3d');
     cards.forEach(el=>{el.classList.add('materialize');el.classList.add('flipped')});
+    if(window._lastRs)broadcastRarePulls(window._lastRs,true);
     resCtl.classList.add('show');
     drawing=false;setBtns(false);save();
   },50);
@@ -1911,6 +2161,7 @@ function endWish(){
    PERFORM DRAW
 ============================================================ */
 function doDraw(n){
+  if(!canPlay()){showToast('请先注册并登录');return}
   if(drawing)return;
   // Check resources
   const fc=Q('#fate-num');let v=parseInt(fc.textContent)||0;
@@ -2069,7 +2320,8 @@ document.addEventListener('keydown',e=>{
   if(e.key==='Escape'){
     if(wishStage.classList.contains('active')){
       if(drawing)skipAnimation();else endWish();
-    }else if(dp.classList.contains('open'))closeD();
+    }else if(Q('#leaderboard-panel').classList.contains('open'))closeLb();
+    else if(dp.classList.contains('open'))closeD();
   }
 });
 // Mute toggle
@@ -2084,6 +2336,7 @@ const ALL_CARDS=[...C6,...C5,...C4,...C3];
 let mgState={active:false,earned:0,timeLeft:15,timer:null,charTimer:null,_moveTimeout:null};
 
 function openMinigame(){
+  if(!canPlay()){showToast('请先注册并登录');return}
   if(drawing||mgState.active)return;
   const card=ALL_CARDS[Math.floor(Math.random()*ALL_CARDS.length)];
   Q('#mg-char-img').src=card.img||'';
@@ -2200,20 +2453,207 @@ Q('#mg-replay').addEventListener('click',()=>{closeMinigame(false);setTimeout(op
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&mgState.active)closeMinigame(true)});
 
 /* ============================================================
+   AUTH & LEADERBOARD
+============================================================ */
+function stateKey(u){return 'wish_genshin_v5:'+u}
+function getUsers(){try{return JSON.parse(localStorage.getItem(USERS_KEY))||{}}catch(e){return{}}}
+function setUsers(u){try{localStorage.setItem(USERS_KEY,JSON.stringify(u))}catch(e){}}
+async function hashPass(pw,salt){const s=salt||'wish_salt_v1';const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s+':'+pw));return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('')}
+function canPlay(){return gameReady&&!!Auth.user}
+function showAuthPanel(name){
+  Q('#auth-panel-form').hidden=name!=='form';
+  Q('#auth-panel-gei').hidden=name!=='gei';
+  Q('#auth-panel-blocked').hidden=name!=='blocked';
+  Q('#auth-overlay').classList.remove('hidden');
+  document.body.classList.add('auth-locked');
+  gameReady=false;
+}
+function hideAuth(){
+  Q('#auth-overlay').classList.add('hidden');
+  document.body.classList.remove('auth-locked');
+}
+function setAuthMsg(t){Q('#auth-msg').textContent=t||''}
+function setAuthMode(mode){
+  Auth.mode=mode;
+  Q('#auth-title').textContent=mode==='register'?'注册':'登录';
+  Q('#auth-submit').textContent=mode==='register'?'注册':'登录';
+  document.querySelectorAll('.auth-tab').forEach(t=>t.classList.toggle('active',t.dataset.mode===mode));
+}
+function applyStateFromData(d){
+  if(!d)return;
+  S.total=d.td||0;S.hist=d.hi||[];S.bn=d.bn||0;S.muted=d.mu||false;
+  const a=v=>Array.isArray(v)?v:[v||0,v||0,v||0];
+  const ag=v=>Array.isArray(v)?v:[!!v,false,false];
+  S.p5=a(d.p5);S.p4=a(d.p4);S.p6=a(d.p6);S.guar=ag(d.gu);
+}
+function loadUserState(){
+  if(!Auth.user)return;
+  try{
+    const d=JSON.parse(localStorage.getItem(stateKey(Auth.user)));
+    applyStateFromData(d);
+  }catch(e){}
+}
+function calcStats(hist){
+  const total=hist.length;
+  const rare=hist.filter(h=>h.rarity>=5).length;
+  const rate=total?rare/total:0;
+  return {total,rare,rate};
+}
+function loadUserStats(username){
+  try{
+    const d=JSON.parse(localStorage.getItem(stateKey(username)));
+    return calcStats(d&&d.hi?d.hi:[]);
+  }catch(e){return calcStats([])}
+}
+function enterGame(){
+  gameReady=true;
+  hideAuth();
+  loadUserState();
+  const tag=Q('#user-tag');
+  tag.textContent=Auth.user;
+  tag.hidden=false;
+  Q('#btn-mute').textContent=S.muted?'🔇':'🔊';
+  renderTabs();updateAll();
+}
+function showGeiPanel(){
+  showAuthPanel('gei');
+}
+function showBlocked(){
+  try{sessionStorage.removeItem(GEI_KEY)}catch(e){}
+  gameReady=false;
+  showAuthPanel('blocked');
+}
+function restoreSession(){
+  try{
+    const s=JSON.parse(localStorage.getItem(SESS_KEY)||'null');
+    if(!s||!s.user||!getUsers()[s.user])return false;
+    Auth.user=s.user;
+    if(sessionStorage.getItem(GEI_KEY)==='1'){enterGame();return true}
+    showGeiPanel();
+    return true;
+  }catch(e){return false}
+}
+async function submitAuth(){
+  const name=(Q('#auth-username').value||'').trim();
+  const pw=Q('#auth-password').value||'';
+  if(name.length<2||name.length>16){setAuthMsg('用户名需 2-16 个字符');return}
+  if(pw.length<4){setAuthMsg('密码至少 4 位');return}
+  if(!crypto.subtle){setAuthMsg('请使用 HTTPS 或本地服务器打开');return}
+  const users=getUsers();
+  const hash=await hashPass(pw);
+  if(Auth.mode==='register'){
+    if(users[name]){setAuthMsg('用户名已存在');return}
+    users[name]={hash,createdAt:Date.now()};
+    setUsers(users);
+    Auth.user=name;
+    try{localStorage.setItem(SESS_KEY,JSON.stringify({user:name}))}catch(e){}
+    setAuthMsg('');
+    Q('#auth-password').value='';
+    showGeiPanel();
+    showToast('注册成功，请完成身份确认');
+    return;
+  }
+  if(!users[name]||users[name].hash!==hash){setAuthMsg('用户名或密码错误');return}
+  Auth.user=name;
+  try{localStorage.setItem(SESS_KEY,JSON.stringify({user:name}))}catch(e){}
+  setAuthMsg('');
+  Q('#auth-password').value='';
+  showGeiPanel();
+}
+function onGeiYes(){
+  try{sessionStorage.setItem(GEI_KEY,'1')}catch(e){}
+  enterGame();
+  showToast('欢迎，'+Auth.user);
+}
+function onGeiNo(){showBlocked()}
+function switchAccount(){
+  gameReady=false;
+  Auth.user=null;
+  try{localStorage.removeItem(SESS_KEY);sessionStorage.removeItem(GEI_KEY)}catch(e){}
+  Q('#auth-username').value='';
+  Q('#auth-password').value='';
+  setAuthMsg('');
+  setAuthMode('login');
+  showAuthPanel('form');
+}
+function logout(){
+  closeLb();
+  switchAccount();
+  showToast('已退出登录');
+}
+function buildLeaderboard(){
+  const users=getUsers();
+  const names=Object.keys(users);
+  const rows=names.map(name=>{
+    const st=loadUserStats(name);
+    return {name,...st};
+  });
+  rows.sort((a,b)=>{
+    if(b.rate!==a.rate)return b.rate-a.rate;
+    if(b.total!==a.total)return b.total-a.total;
+    return a.name.localeCompare(b.name,'zh-CN');
+  });
+  let myRank=0,myRate=0,myTotal=0,myRare=0;
+  if(Auth.user){
+    const mine=rows.find(r=>r.name===Auth.user);
+    if(mine){
+      myRank=rows.indexOf(mine)+1;
+      myRate=mine.rate;myTotal=mine.total;myRare=mine.rare;
+    }
+  }
+  const rateStr=r=>(r.total?(r.rate*100).toFixed(2)+'%':'—');
+  if(!rows.length){
+    Q('#lb-table-wrap').innerHTML='<div class="lb-empty">暂无玩家数据</div>';
+  }else{
+    Q('#lb-table-wrap').innerHTML=`<table class="lb-table"><thead><tr><th class="col-rank">#</th><th>玩家</th><th>5★+</th><th>总抽</th><th>概率</th></tr></thead><tbody>${
+      rows.map((r,i)=>`<tr class="${r.name===Auth.user?'me':''}"><td class="col-rank">${i+1}</td><td>${r.name}</td><td>${r.rare}</td><td>${r.total}</td><td class="col-rate">${rateStr(r)}</td></tr>`).join('')
+    }</tbody></table>`;
+  }
+  if(Auth.user&&myRank){
+    Q('#lb-my-rank').textContent=`你的排名：第 ${myRank} 名 · 5★及以上概率 ${(myRate*100).toFixed(2)}%（${myRare}/${myTotal}）`;
+  }else if(Auth.user){
+    Q('#lb-my-rank').textContent=`${Auth.user}：尚未抽卡，暂无排名`;
+  }else{
+    Q('#lb-my-rank').textContent='登录后可查看你的排名';
+  }
+}
+function openLb(){buildLeaderboard();Q('#leaderboard-panel').classList.add('open');Q('#leaderboard-overlay').classList.add('open')}
+function closeLb(){Q('#leaderboard-panel').classList.remove('open');Q('#leaderboard-overlay').classList.remove('open')}
+function setupAuthUI(){
+  document.body.classList.add('auth-locked');
+  document.querySelectorAll('.auth-tab').forEach(t=>{
+    t.addEventListener('click',()=>setAuthMode(t.dataset.mode));
+  });
+  Q('#auth-submit').addEventListener('click',submitAuth);
+  Q('#auth-gei-yes').addEventListener('click',onGeiYes);
+  Q('#auth-gei-no').addEventListener('click',onGeiNo);
+  Q('#auth-switch-account').addEventListener('click',switchAccount);
+  Q('#auth-logout').addEventListener('click',logout);
+  Q('#btn-leaderboard').addEventListener('click',openLb);
+  Q('#lb-close').addEventListener('click',closeLb);
+  Q('#leaderboard-overlay').addEventListener('click',closeLb);
+  Q('#auth-password').addEventListener('keydown',e=>{if(e.key==='Enter')submitAuth()});
+  setAuthMode('login');
+}
+
+/* ============================================================
    PERSISTENCE
 ============================================================ */
 function load(){
-  try{
-    const d=JSON.parse(localStorage.getItem('wish_genshin_v5'));
-    if(d){S.total=d.td||0;S.hist=d.hi||[];S.bn=d.bn||0;S.muted=d.mu||false;
-      const a=v=>Array.isArray(v)?v:[v||0,v||0,v||0];
-      const ag=v=>Array.isArray(v)?v:[!!v,false,false];
-      S.p5=a(d.p5);S.p4=a(d.p4);S.p6=a(d.p6);S.guar=ag(d.gu);
-    }
-  }catch(e){}
+  if(Auth.user)loadUserState();
+  else{
+    try{
+      const d=JSON.parse(localStorage.getItem('wish_genshin_v5'));
+      applyStateFromData(d);
+    }catch(e){}
+  }
 }
 function save(){
-  try{localStorage.setItem('wish_genshin_v5',JSON.stringify({td:S.total,p5:S.p5,p4:S.p4,p6:S.p6,gu:S.guar,hi:S.hist.slice(-500),bn:S.bn,mu:S.muted}))}catch(e){}
+  if(!Auth.user){
+    try{localStorage.setItem('wish_genshin_v5',JSON.stringify({td:S.total,p5:S.p5,p4:S.p4,p6:S.p6,gu:S.guar,hi:S.hist.slice(-500),bn:S.bn,mu:S.muted}))}catch(e){}
+    return;
+  }
+  try{localStorage.setItem(stateKey(Auth.user),JSON.stringify({td:S.total,p5:S.p5,p4:S.p4,p6:S.p6,gu:S.guar,hi:S.hist.slice(-500),bn:S.bn,mu:S.muted}))}catch(e){}
 }
 
 /* ============================================================
@@ -2236,9 +2676,11 @@ function loop(t){
   requestAnimationFrame(loop);
 }
 function init(){
-  initSF();rPC();load();
-  Q('#btn-mute').textContent=S.muted?'🔇':'🔊';
-  renderTabs();updateAll();
+  initSF();rPC();
+  setupAuthUI();
+  if(!restoreSession()){
+    showAuthPanel('form');
+  }
   requestAnimationFrame(loop);
 }
 init();
